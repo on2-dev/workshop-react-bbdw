@@ -10,8 +10,10 @@ body {
   display: flex;
   gap: 5px;
   justify-content: center;
-  background: linear-gradient(0deg, #494 10px, transparent);
+  background: linear-gradient(0deg, #494 10px, white);
   padding: 10px;
+  position: sticky;
+  top: 0;
 }
 
 .header button {

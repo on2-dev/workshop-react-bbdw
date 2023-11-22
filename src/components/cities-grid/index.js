@@ -45,7 +45,7 @@ export default function CitiesGrid (props) {
         <tbody>
           {cities.map((city) => {
             return (
-              <tr>
+              <tr key={city.nome}>
                 <td>{city.nome}</td>
                 <td>{city.municipio.microrregiao.nome}</td>
               </tr>
