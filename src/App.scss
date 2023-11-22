@@ -1,0 +1,32 @@
+body {
+  margin: 0;
+}
+
+.App {
+  font-family: sans-serif;
+}
+
+.header {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+  background: linear-gradient(0deg, #494 10px, transparent);
+  padding: 10px;
+}
+
+.header button {
+  border-radius: 10px;
+  border: solid 1px black;
+}
+
+.header select {
+  border-radius: 10px;
+  border: solid 1px black;
+  padding: 5px;
+}
+
+.header button:not([disabled]) {
+  background-color: #494;
+  color: white;
+  font-weight: bold;
+}

@@ -1,0 +1,25 @@
+
+.cities-table {
+  width: 100%;
+}
+
+.cities-table thead {
+  background-color: #555;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+}
+
+.cities-table td {
+  display: none;
+}
+
+.cities-table td:first-child {
+  display: table-cell;
+}
+
+@media screen and (min-width: 500px) {
+  .cities-table td {
+    display: table-cell;
+  }
+}
