@@ -135,7 +135,7 @@ export default function App() {
     <div className="App">
       <div className="header">
         <select onChange={onStateChange}>
-          <option value=""></option>
+          <option value="">Selecione um estado</option>
           {statesList.sort(sortByName).map((state) => {
             return (
               <option key={state.sigla} value={state.sigla}>
