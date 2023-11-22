@@ -19,6 +19,7 @@ export default function CitiesGrid (props) {
     loading=false,
     cities=[],
     state=null,
+    filter = '',
     ...other
   } = props;
 
@@ -43,9 +44,15 @@ export default function CitiesGrid (props) {
           </tr>
         </thead>
         <tbody>
-          {cities.map((city) => {
+          {cities.filter(item => {
+            if (!filter || item.nome.toLowerCase().includes(filter.toLowerCase())) {
+              return true;
+            }
+
+            return false;
+          }).map((city) => {
             return (
-              <tr>
+              <tr key={city.nome}>
                 <td>{city.nome}</td>
                 <td>{city.municipio.microrregiao.nome}</td>
               </tr>

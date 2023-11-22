@@ -62,6 +62,9 @@ export default function App() {
   const [selectedState, setSelectedState] = React.useState(null);
   const [citiesForState, setCitiesForCurrentUF] = React.useState(null);
 
+  const [filteringBy, setFilteringBy] = React.useState('');
+  
+
 
   React.useEffect((_) => {
     fetch(API_STATES_UF)
@@ -147,15 +150,24 @@ export default function App() {
         <button disabled={!selectedState} onClick={getCities}>
           Ok
         </button>
+
+        {
+          selectedState && citiesForState?.length && (
+            <input
+              type="search"
+              placeholder="Filtrar por..."
+              onChange={event => {setFilteringBy(event.target.value);}}
+            />
+          )
+        }
       </div>
       {/* <div className="main">{getCitiesGrid()}</div> */}
-
-
       <div className="main">
         <CitiesGrid
           loading={loadingCities}
           state={selectedState}
           cities={citiesForState}
+          filter={filteringBy}
         />
       </div>
     </div>
