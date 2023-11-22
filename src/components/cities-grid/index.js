@@ -1,18 +1,18 @@
-import React /*, { useEffect, useState, useCallback, useRef }*/ from 'react';
+import React from 'react';
 
 import './index.scss';
 
 /**
- * React component: ComponentName
+ * CitiesGrid
  * 
- * Description
+ * Responsible for rendering the list of cities or possible
+ * alternative states, such as "loading" or "empty".
  * 
  * @param {Object} props Component's properties
  * @return {ReactComponent} ComponentName
  */
-
-
 export default function CitiesGrid (props) {
+
   const {
     className = '',
     children,
@@ -22,10 +22,12 @@ export default function CitiesGrid (props) {
     ...other
   } = props;
 
+  // when loading
   if (loading) {
     return <div>Carregando: {state}</div>;
   }
 
+  // if not loading, but has no cities to list
   if (!loading && !cities?.length) {
     return <div>Selecione um estado e clique em OK</div>;
   }

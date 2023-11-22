@@ -1,39 +1,8 @@
-import React from "react";
-import "./App.scss";
-
-
-import CitiesGrid from "./components/cities-grid";
-
 /**
- * # Desafio front-end
- *
- * É um componente que terá um select e um botão, e terá
- * uma listagem ou grid com dados logo abaixo.
- *
- * O componente deve ser montado inicialmente com um
- * placeholder.
- *
- * Deve então fazer um fetch na API para buscar a lista
- * de todos os estados do Brasil.
- *
- * Depois, listar no elemento do tipo select todos estes
- * países como opções.
- *
- * Quando o usuário selecionar um estado, o botão fica ativo.
- *
- * Se o usuário clicar no botão, deve então buscar a lista
- * de cidades naquele estado.
- *
- * Quando obtiver o resultado, deve listar as cidades daquele
- * estado exibindo o nome da cidade, e o nome da microrregião
- * daquela cidade.
- *
- * # Bonus points
- * - Colocar tanto os estados quanto as cidades em ordem
- *   alfabética
- * - Se o dispositivo for pequeno (mobile), este grid pode
- *   mostrar apenas o nome da cidade.
- *
+ * Busca a lista de estados no Brasil.
+ * Ao clicar no botão, se um estado estiver selecionado, lista as cidades
+ * daquele estado.
+ * 
  * # Helpers
  * API para pegar a lista de estados do Brasil:
  * https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome
@@ -42,27 +11,45 @@ import CitiesGrid from "./components/cities-grid";
  * https://servicodados.ibge.gov.br/api/v1/localidades/estados/${UF}/distritos
  *
  */
+import React from "react";
+import CitiesGrid from "./components/cities-grid";
 
+import "./App.scss";
+
+/**
+ * Generates the url used to retrieve the list of cities for a given state.
+ * 
+ * @param {String} UF The acronym for the state
+ * @returns String The parsed URL for the API to return the list of cities within that state
+ */
 const getCitiesAPI_URL = function (UF = "") {
   UF = UF.substring(0, 2);
   return `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${UF}/distritos`;
 };
 
+// The url for the API to retrieve the list of states.
 const API_STATES_UF = `https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome`;
 
+/**
+ * This object contains the list of cities already downloaded
+ * for the states.
+ * Each state is a `key` in the object.
+ */
 const CACHED_CITIES = {};
 
+/**
+ * Our main App entrypoint.
+ * 
+ * @returns ReactComponent
+ */
 export default function App() {
+
   const [statesList, setStatesList] = React.useState(null);
-
-
   const [loadingCities, setLoadingCities] = React.useState(null);
-
-
   const [selectedState, setSelectedState] = React.useState(null);
   const [citiesForState, setCitiesForCurrentUF] = React.useState(null);
 
-
+  // will load the list of states as soon as the component is ready (mount)
   React.useEffect((_) => {
     fetch(API_STATES_UF)
       .then(async (response) => {
@@ -76,7 +63,7 @@ export default function App() {
   }, []);
 
   /**
-   * in the first render, we show only the placeholder
+   * If the list of states is not yet available, we show only a placeholder
    */
   if (!statesList) {
     return <div className="no-data">Building up...</div>;
@@ -84,9 +71,6 @@ export default function App() {
 
   /**
    * Sorts a list based on item's names.
-   *
-   * As both states and cities coming from the api have a
-   * name, we can use the same function to sort them both.
    */
   function sortByName(a, b) {
     return a.nome.localeCompare(b.nome);
@@ -98,8 +82,6 @@ export default function App() {
    *
    * @param {Event} event The onChange event
    */
-
-
   function onStateChange(event) {
     setCitiesForCurrentUF(null);
     setSelectedState(event.target.value);
@@ -115,7 +97,9 @@ export default function App() {
       return setCitiesForCurrentUF(CACHED_CITIES[selectedState]);
     }
 
+    // mark it as in the "loading" state
     setLoadingCities(true);
+
     fetch(getCitiesAPI_URL(selectedState))
       .then(async (response) => {
         const data = await response.json();
@@ -148,8 +132,6 @@ export default function App() {
           Ok
         </button>
       </div>
-      {/* <div className="main">{getCitiesGrid()}</div> */}
-
 
       <div className="main">
         <CitiesGrid
@@ -158,6 +140,7 @@ export default function App() {
           cities={citiesForState}
         />
       </div>
+
     </div>
   );
 }
